@@ -12,7 +12,11 @@ extension CGRect: QuadTreeRect {
     public var rectWidth: Double { width }
     public var rectHeight: Double { height }
 
-    public init(point: CGPoint, width: Double, height: Double) {
+    public init(
+        point: CGPoint,
+        width: Double,
+        height: Double
+    ) {
         self.init(
             origin: point,
             size: .init(
@@ -32,7 +36,10 @@ extension CGRect: QuadTreeRect {
 }
 
 public extension QuadTreeRect where Self == CGRect {
-    static func cgRect(origin: CGPoint, size: CGSize) -> Self {
+    static func cgRect(
+        origin: CGPoint,
+        size: CGSize
+    ) -> Self {
         .init(origin: origin, size: size)
     }
 

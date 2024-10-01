@@ -8,8 +8,8 @@
 import CoreGraphics
 
 extension CGPoint: QuadTreePoint {
-    public var coordinateX: Double { self.x }
-    public var coordinateY: Double { self.y }
+    public var coordinateX: Double { x }
+    public var coordinateY: Double { y }
 
     public init(coordinateX: Double, coordinateY: Double) {
         self.init(x: coordinateX, y: coordinateY)
