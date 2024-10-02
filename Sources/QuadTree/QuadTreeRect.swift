@@ -21,7 +21,7 @@ public protocol QuadTreeRect {
     func intersects(with rect: Self) -> Bool
 }
 
-extension QuadTreeRect {
+public extension QuadTreeRect {
     func grid(of xCount: Int, by yCount: Int) -> [Self] {
         let rectSize: CGSize = .init(
             width: rectWidth / Double(xCount),
