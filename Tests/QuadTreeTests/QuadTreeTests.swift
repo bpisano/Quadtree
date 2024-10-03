@@ -42,7 +42,7 @@ final class quad_treeTests: XCTestCase {
         let queryRect = CGRect(x: 0, y: 0, width: 3, height: 3)
         let foundElements = quadTree.query(in: queryRect)
         XCTAssertEqual(foundElements.count, 2)
-        XCTAssertEqual(foundElements.map(\.id), [2, 1])
+        XCTAssertEqual(foundElements.map(\.id), [1, 2])
     }
 
     func testRemove() {
