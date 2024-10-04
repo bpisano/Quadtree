@@ -22,26 +22,30 @@ public protocol QuadTreeRect {
 }
 
 public extension QuadTreeRect {
-    func grid(of xCount: Int, by yCount: Int) -> [Self] {
-        let rectSize: CGSize = .init(
-            width: rectWidth / Double(xCount),
-            height: rectHeight / Double(yCount)
-        )
-        var rects: [Self] = []
-        for x in 0..<xCount {
-            for y in 0..<yCount {
-                let rectOrigin: Point = .init(
-                    coordinateX: rectOrigin.coordinateX + Double(x) * rectSize.width,
-                    coordinateY: rectOrigin.coordinateY + Double(y) * rectSize.height
+    func grid(of width: Int, by height: Int) -> [Self] {
+        guard width > 0, height > 0 else { return [] }
+
+        let subRectWidth: Double = rectWidth / Double(width)
+        let subRectHeight: Double = rectHeight / Double(height)
+
+        var grid: [Self] = []
+
+        for row in 0..<height {
+            for column in 0..<width {
+                let subRectX: Double = rectOrigin.coordinateX + Double(column) * subRectWidth
+                let subRectY: Double = rectOrigin.coordinateY + Double(row) * subRectHeight
+
+                let subRect: Self = .init(
+                    x: subRectX,
+                    y: subRectY,
+                    width: subRectWidth,
+                    height: subRectHeight
                 )
-                let rect: Self = .init(
-                    point: rectOrigin,
-                    width: rectSize.width,
-                    height: rectSize.height
-                )
-                rects.append(rect)
+
+                grid.append(subRect)
             }
         }
-        return rects
+
+        return grid
     }
 }
