@@ -112,16 +112,36 @@ public final class QuadTreeNode<Element: QuadTreeElement, Rect: QuadTreeRect> wh
         let w: Double = boundary.rectWidth / 2
         let h: Double = boundary.rectHeight / 2
 
-        let ne: Rect = .init(x: x + w, y: y, width: w, height: h)
+        let ne: Rect = .init(
+            x: x + w / 2,
+            y: y - h / 2,
+            width: w,
+            height: h
+        )
         northeast = QuadTreeNode(boundary: ne, capacity: capacity)
 
-        let nw: Rect = .init(x: x, y: y, width: w, height: h)
+        let nw: Rect = .init(
+            x: x - w / 2,
+            y: y - h / 2,
+            width: w,
+            height: h
+        )
         northwest = QuadTreeNode(boundary: nw, capacity: capacity)
 
-        let se: Rect = .init(x: x + w, y: y + h, width: w, height: h)
+        let se: Rect = .init(
+            x: x + w / 2,
+            y: y + h / 2,
+            width: w,
+            height: h
+        )
         southeast = QuadTreeNode(boundary: se, capacity: capacity)
 
-        let sw: Rect = .init(x: x, y: y + h, width: w, height: h)
+        let sw: Rect = .init(
+            x: x - w / 2,
+            y: y + h / 2,
+            width: w,
+            height: h
+        )
         southwest = QuadTreeNode(boundary: sw, capacity: capacity)
 
         for element in elements {
