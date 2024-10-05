@@ -8,34 +8,9 @@
 import Foundation
 
 public final class QuadTreeNode<Element: QuadTreeElement, Rect: QuadTreeRect> where Element.Point == Rect.Point {
-    var elements: [Element] {
-        get {
-            var collectedElements: [Element] = _elements
-            if isDivided {
-                if let northeast = northeast { collectedElements.append(contentsOf: northeast.elements) }
-                if let northwest = northwest { collectedElements.append(contentsOf: northwest.elements) }
-                if let southeast = southeast { collectedElements.append(contentsOf: southeast.elements) }
-                if let southwest = southwest { collectedElements.append(contentsOf: southwest.elements) }
-            }
-            return collectedElements
-        }
-        set {
-            _elements = newValue
-        }
-    }
-    var totalElementCount: Int {
-        guard isDivided else { return elements.count }
-        var count: Int = elements.count
-        count += (northeast?.totalElementCount ?? 0)
-        count += (northwest?.totalElementCount ?? 0)
-        count += (southeast?.totalElementCount ?? 0)
-        count += (southwest?.totalElementCount ?? 0)
-        return count
-    }
-
-    private var boundary: Rect
-    private var capacity: Int
-    private var _elements: [Element] = []
+    private let boundary: Rect
+    private let capacity: Int
+    private var elements: [Element] = []
     private var isDivided: Bool = false
 
     private var northeast: QuadTreeNode?
@@ -51,8 +26,19 @@ public final class QuadTreeNode<Element: QuadTreeElement, Rect: QuadTreeRect> wh
     @discardableResult
     public func insert(_ element: Element) -> Bool {
         guard boundary.contains(point: element.position) else { return false }
-        elements.append(element)
+
+        if isDivided {
+            if let northeast, northeast.insert(element) { return true }
+            if let northwest, northwest.insert(element) { return true }
+            if let southeast, southeast.insert(element) { return true }
+            if let southwest, southwest.insert(element) { return true }
+            return false
+        } else {
+            elements.append(element)
+        }
+
         subdivideIfNeeded()
+
         return true
     }
 
@@ -92,7 +78,7 @@ public final class QuadTreeNode<Element: QuadTreeElement, Rect: QuadTreeRect> wh
             southeast?.query(rect: rect, found: &found)
             southwest?.query(rect: rect, found: &found)
         } else {
-            for element in _elements {
+            for element in elements {
                 if rect.contains(point: element.position) {
                     found.insert(element)
                 }
@@ -107,41 +93,40 @@ public final class QuadTreeNode<Element: QuadTreeElement, Rect: QuadTreeRect> wh
     }
 
     private func subdivide() {
-        let x: Double = boundary.rectOrigin.coordinateX
-        let y: Double = boundary.rectOrigin.coordinateY
-        let w: Double = boundary.rectWidth / 2
-        let h: Double = boundary.rectHeight / 2
+        let halfWidth: Double = boundary.rectWidth / 2
+        let halfHeight: Double = boundary.rectHeight / 2
 
         let ne: Rect = .init(
-            x: x + w / 2,
-            y: y - h / 2,
-            width: w,
-            height: h
+            x: boundary.topLeadingX + halfWidth * boundary.rectAnchor.x,
+            y: boundary.topLeadingY + halfHeight * boundary.rectAnchor.y,
+            width: halfWidth,
+            height: halfHeight
         )
-        northeast = QuadTreeNode(boundary: ne, capacity: capacity)
 
         let nw: Rect = .init(
-            x: x - w / 2,
-            y: y - h / 2,
-            width: w,
-            height: h
+            x: ne.rectOrigin.coordinateX + halfWidth,
+            y: ne.rectOrigin.coordinateY,
+            width: halfWidth,
+            height: halfHeight
         )
-        northwest = QuadTreeNode(boundary: nw, capacity: capacity)
-
-        let se: Rect = .init(
-            x: x + w / 2,
-            y: y + h / 2,
-            width: w,
-            height: h
-        )
-        southeast = QuadTreeNode(boundary: se, capacity: capacity)
 
         let sw: Rect = .init(
-            x: x - w / 2,
-            y: y + h / 2,
-            width: w,
-            height: h
+            x: nw.rectOrigin.coordinateX,
+            y: nw.rectOrigin.coordinateY + halfHeight,
+            width: halfWidth,
+            height: halfHeight
         )
+
+        let se: Rect = .init(
+            x: ne.rectOrigin.coordinateX,
+            y: ne.rectOrigin.coordinateY + halfHeight,
+            width: halfWidth,
+            height: halfHeight
+        )
+
+        northeast = QuadTreeNode(boundary: ne, capacity: capacity)
+        northwest = QuadTreeNode(boundary: nw, capacity: capacity)
+        southeast = QuadTreeNode(boundary: se, capacity: capacity)
         southwest = QuadTreeNode(boundary: sw, capacity: capacity)
 
         for element in elements {
@@ -151,34 +136,50 @@ public final class QuadTreeNode<Element: QuadTreeElement, Rect: QuadTreeRect> wh
             if southwest?.insert(element) == true { continue }
         }
 
-        elements.removeAll()
+        elements = []
 
         isDivided = true
     }
 
     private func recomposeIfNeeded() {
         guard isDivided else { return }
-        guard totalElementCount <= capacity else { return }
-        recompose()
+        guard let northeast, let northwest, let southeast, let southwest else { return }
+        guard !northeast.isDivided, !northwest.isDivided, !southeast.isDivided, !southwest.isDivided else { return }
+
+        let childElements: [Element] = northeast.elements + northwest.elements + southeast.elements + southwest.elements
+
+        if childElements.count <= capacity {
+            recompose(with: childElements)
+        }
     }
 
-    private func recompose() {
-        var allElements: [Element] = []
-
-        if let northeast = northeast { allElements.append(contentsOf: northeast.elements) }
-        if let northwest = northwest { allElements.append(contentsOf: northwest.elements) }
-        if let southeast = southeast { allElements.append(contentsOf: southeast.elements) }
-        if let southwest = southwest { allElements.append(contentsOf: southwest.elements) }
-
+    private func recompose(with childElements: [Element]) {
         northeast = nil
         northwest = nil
         southeast = nil
         southwest = nil
 
-        for element in allElements {
-            insert(element)
-        }
+        elements = childElements
 
         isDivided = false
+    }
+}
+
+extension QuadTreeNode: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        var result: String = "\(boundary) \(elements.count) elements"
+
+        if !elements.isEmpty {
+            result += "\n  Elements: \(elements)"
+        }
+
+        if isDivided {
+            result += "\n  NE: \(northeast?.debugDescription.indented(by: 4) ?? "nil")"
+            result += "\n  NW: \(northwest?.debugDescription.indented(by: 4) ?? "nil")"
+            result += "\n  SE: \(southeast?.debugDescription.indented(by: 4) ?? "nil")"
+            result += "\n  SW: \(southwest?.debugDescription.indented(by: 4) ?? "nil")"
+        }
+
+        return result
     }
 }

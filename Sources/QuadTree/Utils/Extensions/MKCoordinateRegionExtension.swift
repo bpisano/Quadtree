@@ -17,6 +17,7 @@ extension MKCoordinateRegion: QuadTreeRect {
     }
     public var rectWidth: Double { span.longitudeDelta }
     public var rectHeight: Double { span.latitudeDelta }
+    public var rectAnchor: QuadTreeAnchor { .center }
 
     public init(
         x: Double,
@@ -55,29 +56,5 @@ extension MKCoordinateRegion: QuadTreeRect {
                 longitudeDelta: width
             )
         )
-    }
-
-    public func contains(point: CLLocationCoordinate2D) -> Bool {
-        let minX = rectOrigin.longitude
-        let maxX = rectOrigin.longitude + rectWidth
-        let minY = rectOrigin.latitude
-        let maxY = rectOrigin.latitude + rectHeight
-
-        return point.longitude >= minX && point.longitude <= maxX &&
-        point.latitude >= minY && point.latitude <= maxY
-    }
-
-    public func intersects(with rect: MKCoordinateRegion) -> Bool {
-        let minX1 = rectOrigin.longitude
-        let maxX1 = rectOrigin.longitude + rectWidth
-        let minY1 = rectOrigin.latitude
-        let maxY1 = rectOrigin.latitude + rectHeight
-
-        let minX2 = rect.rectOrigin.longitude
-        let maxX2 = rect.rectOrigin.longitude + rect.rectWidth
-        let minY2 = rect.rectOrigin.latitude
-        let maxY2 = rect.rectOrigin.latitude + rect.rectHeight
-
-        return !(minX1 > maxX2 || maxX1 < minX2 || minY1 > maxY2 || maxY1 < minY2)
     }
 }

@@ -28,3 +28,9 @@ public final class QuadTree<Element: QuadTreeElement, Rect: QuadTreeRect> where 
         root.query(in: rect)
     }
 }
+
+extension QuadTree: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        "QuadTree\n\(root.debugDescription)"
+    }
+}

@@ -18,3 +18,9 @@ struct TestElement: QuadTreeElement {
         hasher.combine(position.y)
     }
 }
+
+extension TestElement: CustomDebugStringConvertible {
+    var debugDescription: String {
+        "(\(position.x) \(position.y))"
+    }
+}
