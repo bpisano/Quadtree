@@ -24,7 +24,7 @@ public final class QuadTree<Element: QuadTreeElement, Rect: QuadTreeRect> where 
         root.remove(element)
     }
 
-    public func query(in rect: Rect) -> Set<Element> {
+    public func query(in rect: Rect) -> [Element] {
         root.query(in: rect)
     }
 }

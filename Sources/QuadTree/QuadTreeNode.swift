@@ -63,13 +63,13 @@ public final class QuadTreeNode<Element: QuadTreeElement, Rect: QuadTreeRect> wh
         return false
     }
 
-    public func query(in rect: Rect) -> Set<Element> {
-        var found: Set<Element> = Set()
+    public func query(in rect: Rect) -> [Element] {
+        var found: [Element] = []
         query(rect: rect, found: &found)
         return found
     }
 
-    private func query(rect: Rect, found: inout Set<Element>) {
+    private func query(rect: Rect, found: inout [Element]) {
         guard boundary.intersects(with: rect) else { return }
 
         if isDivided {
@@ -78,11 +78,11 @@ public final class QuadTreeNode<Element: QuadTreeElement, Rect: QuadTreeRect> wh
             southeast?.query(rect: rect, found: &found)
             southwest?.query(rect: rect, found: &found)
         } else {
-            for element in elements {
-                if rect.contains(point: element.position) {
-                    found.insert(element)
+            elements
+                .filter { rect.contains(point: $0.position) }
+                .forEach { element in
+                    found.append(element)
                 }
-            }
         }
     }
 
