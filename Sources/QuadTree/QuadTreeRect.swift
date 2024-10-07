@@ -93,4 +93,46 @@ extension QuadTreeRect {
 
         return grid
     }
+
+    public func grid(of width: Int, by height: Int, in rect: Self) -> [Self] {
+        guard width > 0, height > 0 else { return [] }
+
+        let subRectWidth: Double = rectWidth / Double(width)
+        let subRectHeight: Double = rectHeight / Double(height)
+
+        let startX: Double = topLeadingX
+        let startY: Double = topLeadingY
+
+        let minX: Double = rect.topLeadingX
+        let maxX: Double = rect.topLeadingX + rect.rectWidth
+        let minY: Double = rect.topLeadingY
+        let maxY: Double = rect.topLeadingY + rect.rectHeight
+
+        let minColumn: Int = max(0, Int((minX - startX) / subRectWidth))
+        let maxColumn: Int = min(width - 1, Int((maxX - startX) / subRectWidth))
+        let minRow: Int = max(0, Int((minY - startY) / subRectHeight))
+        let maxRow: Int = min(height - 1, Int((maxY - startY) / subRectHeight))
+
+        var grid: [Self] = []
+
+        for row in minRow...maxRow {
+            for column in minColumn...maxColumn {
+                let subRectX: Double = startX + Double(column) * subRectWidth
+                let subRectY: Double = startY + Double(row) * subRectHeight
+
+                let subRect: Self = .init(
+                    x: subRectX + subRectWidth * rectAnchor.x,
+                    y: subRectY + subRectHeight * rectAnchor.y,
+                    width: subRectWidth,
+                    height: subRectHeight
+                )
+
+                if subRect.intersects(with: rect) {
+                    grid.append(subRect)
+                }
+            }
+        }
+
+        return grid
+    }
 }

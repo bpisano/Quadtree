@@ -8,7 +8,7 @@
 import Foundation
 import QuadTree
 
-struct TestRectTopLeading: QuadTreeRect {
+struct TestRectTopLeading: QuadTreeRect, Equatable {
     let rectOrigin: CGPoint
     let rectWidth: Double
     let rectHeight: Double
