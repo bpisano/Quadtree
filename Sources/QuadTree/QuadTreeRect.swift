@@ -72,8 +72,8 @@ extension QuadTreeRect {
                 let subRectY: Double = startY + Double(row) * subRectHeight
 
                 let subRect: Self = .init(
-                    x: subRectX,
-                    y: subRectY,
+                    x: subRectX + subRectWidth * rectAnchor.x,
+                    y: subRectY + subRectHeight * rectAnchor.y,
                     width: subRectWidth,
                     height: subRectHeight
                 )
