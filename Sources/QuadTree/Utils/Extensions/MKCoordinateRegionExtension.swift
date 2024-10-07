@@ -9,12 +9,7 @@ import Foundation
 import MapKit
 
 extension MKCoordinateRegion: QuadTreeRect {
-    public var rectOrigin: CLLocationCoordinate2D {
-        .init(
-            latitude: center.latitude - span.latitudeDelta / 2,
-            longitude: center.longitude - span.longitudeDelta / 2
-        )
-    }
+    public var rectOrigin: CLLocationCoordinate2D { center }
     public var rectWidth: Double { span.longitudeDelta }
     public var rectHeight: Double { span.latitudeDelta }
     public var rectAnchor: QuadTreeAnchor { .center }
@@ -25,8 +20,8 @@ extension MKCoordinateRegion: QuadTreeRect {
         width: Double,
         height: Double
     ) {
-        let centerLatitude = y + height / 2
-        let centerLongitude = x + width / 2
+        let centerLatitude = y
+        let centerLongitude = x
         let spanLatitude = height
         let spanLongitude = width
 
@@ -38,22 +33,6 @@ extension MKCoordinateRegion: QuadTreeRect {
             span: MKCoordinateSpan(
                 latitudeDelta: spanLatitude,
                 longitudeDelta: spanLongitude
-            )
-        )
-    }
-
-    public init(point: CLLocationCoordinate2D, width: Double, height: Double) {
-        let centerLatitude = point.latitude + height / 2
-        let centerLongitude = point.longitude + width / 2
-
-        self.init(
-            center: CLLocationCoordinate2D(
-                latitude: centerLatitude,
-                longitude: centerLongitude
-            ),
-            span: MKCoordinateSpan(
-                latitudeDelta: height,
-                longitudeDelta: width
             )
         )
     }

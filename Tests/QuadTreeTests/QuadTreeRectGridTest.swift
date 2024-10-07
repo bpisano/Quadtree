@@ -7,6 +7,7 @@
 
 import XCTest
 import QuadTree
+import MapKit
 
 final class QuadTreeRectGridTest: XCTestCase {
     func testGridTopLeading() {
@@ -34,5 +35,14 @@ final class QuadTreeRectGridTest: XCTestCase {
         XCTAssertEqual(grid[1].rectOrigin, .init(x: 10, y: 5))
         XCTAssertEqual(grid[2].rectOrigin, .init(x: 5, y: 10))
         XCTAssertEqual(grid[3].rectOrigin, .init(x: 10, y: 10))
+    }
+
+    func testCoordinateRegion() {
+        let region: MKCoordinateRegion = .init(x: 5, y: 5, width: 10, height: 10)
+        let grid: [MKCoordinateRegion] = region.grid(of: 2, by: 2)
+        XCTAssertEqual(grid[0].rectOrigin, .init(coordinateX: 2.5, coordinateY: 2.5))
+        XCTAssertEqual(grid[1].rectOrigin, .init(coordinateX: 2.5, coordinateY: 7.5))
+        XCTAssertEqual(grid[2].rectOrigin, .init(coordinateX: 7.5, coordinateY: 2.5))
+        XCTAssertEqual(grid[3].rectOrigin, .init(coordinateX: 7.5, coordinateY: 7.5))
     }
 }

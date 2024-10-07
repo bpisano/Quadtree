@@ -30,6 +30,15 @@ extension QuadTreeRect {
         .topLeading
     }
 
+    public init(point: Point, width: Double, height: Double) {
+        self.init(
+            x: point.coordinateX,
+            y: point.coordinateY,
+            width: width,
+            height: height
+        )
+    }
+
     public func contains(point: Point) -> Bool {
         let minX: Double = topLeadingX
         let maxX: Double = topLeadingX + rectWidth
