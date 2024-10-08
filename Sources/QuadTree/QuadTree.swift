@@ -24,6 +24,10 @@ public final class QuadTree<Element: QuadTreeElement, Rect: QuadTreeRect> where 
         root.remove(element)
     }
 
+    public func removeAll(where match: (_ element: Element) throws -> Bool) rethrows {
+        try root.removeAll(where: match)
+    }
+
     public func query(in rect: Rect) -> [Element] {
         root.query(in: rect)
     }

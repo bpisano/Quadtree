@@ -63,6 +63,18 @@ public final class QuadTreeNode<Element: QuadTreeElement, Rect: QuadTreeRect> wh
         return false
     }
 
+    public func removeAll(where match: (_ element: Element) throws -> Bool) rethrows {
+        if isDivided {
+            try northeast?.removeAll(where: match)
+            try northwest?.removeAll(where: match)
+            try southeast?.removeAll(where: match)
+            try southwest?.removeAll(where: match)
+            recomposeIfNeeded()
+        } else {
+            try elements.removeAll(where: match)
+        }
+    }
+
     public func query(in rect: Rect) -> [Element] {
         var found: [Element] = []
         query(rect: rect, found: &found)
