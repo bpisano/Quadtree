@@ -33,7 +33,7 @@ let points: [CGPoint] = await quadtree.query(in: queryRect) // [CGPoint(x: 2, y:
 
 ## Conception
 
-This Quadtree package is base on 3 fondamental protocols:
+This Quadtree package is based on 3 fondamental protocols:
 
 - `QuadtreePoint`: A protocol that represent a point in a 2D space.
 - `QuadtreeElement`: A protocol that represent an element that can be inserted in the Quadtree.
