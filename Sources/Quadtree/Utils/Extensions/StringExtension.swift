@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  QuadTree
+//  Quadtree
 //
 //  Created by Benjamin Pisano on 04/10/2024.
 //

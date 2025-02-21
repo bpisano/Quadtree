@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol QuadTreePoint {
+public protocol QuadtreePoint: Sendable {
     var coordinateX: Double { get }
     var coordinateY: Double { get }
 

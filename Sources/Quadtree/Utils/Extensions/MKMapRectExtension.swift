@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  QuadTree
+//  Quadtree
 //
 //  Created by Benjamin Pisano on 01/10/2024.
 //
@@ -8,7 +8,7 @@
 import Foundation
 import MapKit
 
-extension MKMapRect: QuadTreeRect {
+extension MKMapRect: QuadtreeRect {
     public var rectOrigin: MKMapPoint { origin }
     public var rectWidth: Double { size.width }
     public var rectHeight: Double { size.height }
@@ -53,3 +53,5 @@ extension MKMapRect: QuadTreeRect {
         intersects(rect)
     }
 }
+
+extension MKMapRect: @retroactive @unchecked Sendable { }

@@ -1,18 +1,18 @@
 //
 //  File.swift
-//  QuadTree
+//  Quadtree
 //
 //  Created by Benjamin Pisano on 05/10/2024.
 //
 
 import Foundation
-import QuadTree
+import Quadtree
 
-struct TestRectTopLeading: QuadTreeRect, Equatable {
+struct TestRectTopLeading: QuadtreeRect, Equatable {
     let rectOrigin: CGPoint
     let rectWidth: Double
     let rectHeight: Double
-    let rectAnchor: QuadTreeAnchor = .topLeading
+    let rectAnchor: QuadtreeAnchor = .topLeading
 
     init(point: CGPoint, width: Double, height: Double) {
         rectOrigin = point

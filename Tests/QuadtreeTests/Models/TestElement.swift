@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import QuadTree
+import Quadtree
 
-struct TestElement: QuadTreeElement {
+struct TestElement: QuadtreeElement {
     let id: Int
     let position: CGPoint
 

@@ -7,11 +7,12 @@
 
 import Foundation
 
-public final class QuadTree<Element: QuadTreeElement, Rect: QuadTreeRect> where Element.Point == Rect.Point {
-    private let root: QuadTreeNode<Element, Rect>
+@QuadtreeActor
+public final class Quadtree<Element: QuadtreeElement, Rect: QuadtreeRect> where Element.Point == Rect.Point {
+    private nonisolated let root: QuadtreeNode<Element, Rect>
 
-    public init(boundary: Rect, capacity: Int) {
-        root = QuadTreeNode(boundary: boundary, capacity: capacity)
+    public nonisolated init(boundary: Rect, capacity: Int) {
+        root = QuadtreeNode(boundary: boundary, capacity: capacity)
     }
 
     @discardableResult
@@ -28,13 +29,17 @@ public final class QuadTree<Element: QuadTreeElement, Rect: QuadTreeRect> where 
         try root.removeAll(where: match)
     }
 
+    public func removeAll() {
+        root.removeAll()
+    }
+
     public func query(in rect: Rect) -> [Element] {
         root.query(in: rect)
     }
 }
 
-extension QuadTree: CustomDebugStringConvertible {
+extension Quadtree: @preconcurrency CustomDebugStringConvertible {
     public var debugDescription: String {
-        "QuadTree\n\(root.debugDescription)"
+        "Quadtree\n\(root.debugDescription)"
     }
 }

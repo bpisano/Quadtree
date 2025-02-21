@@ -1,12 +1,12 @@
 //
 //  File.swift
-//  QuadTree
+//  Quadtree
 //
 //  Created by Benjamin Pisano on 05/10/2024.
 //
 
 import XCTest
-import QuadTree
+import Quadtree
 
 final class QuadRectContainsTests: XCTestCase {
     func testTopLeadingAnchor() {

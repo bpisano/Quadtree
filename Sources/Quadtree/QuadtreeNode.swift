@@ -7,18 +7,19 @@
 
 import Foundation
 
-public final class QuadTreeNode<Element: QuadTreeElement, Rect: QuadTreeRect> where Element.Point == Rect.Point {
-    private let boundary: Rect
-    private let capacity: Int
+@QuadtreeActor
+public final class QuadtreeNode<Element: QuadtreeElement, Rect: QuadtreeRect> where Element.Point == Rect.Point {
+    private nonisolated let boundary: Rect
+    private nonisolated let capacity: Int
     private var elements: [Element] = []
     private var isDivided: Bool = false
 
-    private var northeast: QuadTreeNode?
-    private var northwest: QuadTreeNode?
-    private var southeast: QuadTreeNode?
-    private var southwest: QuadTreeNode?
+    private var northeast: QuadtreeNode?
+    private var northwest: QuadtreeNode?
+    private var southeast: QuadtreeNode?
+    private var southwest: QuadtreeNode?
 
-    public init(boundary: Rect, capacity: Int) {
+    public nonisolated init(boundary: Rect, capacity: Int) {
         self.boundary = boundary
         self.capacity = capacity
     }
@@ -72,6 +73,18 @@ public final class QuadTreeNode<Element: QuadTreeElement, Rect: QuadTreeRect> wh
             recomposeIfNeeded()
         } else {
             try elements.removeAll(where: match)
+        }
+    }
+
+    public func removeAll() {
+        if isDivided {
+            northeast?.removeAll()
+            northwest?.removeAll()
+            southeast?.removeAll()
+            southwest?.removeAll()
+            recomposeIfNeeded()
+        } else {
+            elements = []
         }
     }
 
@@ -136,10 +149,10 @@ public final class QuadTreeNode<Element: QuadTreeElement, Rect: QuadTreeRect> wh
             height: halfHeight
         )
 
-        northeast = QuadTreeNode(boundary: ne, capacity: capacity)
-        northwest = QuadTreeNode(boundary: nw, capacity: capacity)
-        southeast = QuadTreeNode(boundary: se, capacity: capacity)
-        southwest = QuadTreeNode(boundary: sw, capacity: capacity)
+        northeast = QuadtreeNode(boundary: ne, capacity: capacity)
+        northwest = QuadtreeNode(boundary: nw, capacity: capacity)
+        southeast = QuadtreeNode(boundary: se, capacity: capacity)
+        southwest = QuadtreeNode(boundary: sw, capacity: capacity)
 
         for element in elements {
             if northeast?.insert(element) == true { continue }
@@ -177,7 +190,7 @@ public final class QuadTreeNode<Element: QuadTreeElement, Rect: QuadTreeRect> wh
     }
 }
 
-extension QuadTreeNode: CustomDebugStringConvertible {
+extension QuadtreeNode: @preconcurrency CustomDebugStringConvertible {
     public var debugDescription: String {
         var result: String = "\(boundary) \(elements.count) elements"
 

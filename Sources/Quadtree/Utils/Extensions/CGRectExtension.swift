@@ -7,7 +7,7 @@
 
 import CoreGraphics
 
-extension CGRect: QuadTreeRect {
+extension CGRect: QuadtreeRect {
     public var rectOrigin: CGPoint { origin }
     public var rectWidth: Double { width }
     public var rectHeight: Double { height }
@@ -35,7 +35,7 @@ extension CGRect: QuadTreeRect {
     }
 }
 
-public extension QuadTreeRect where Self == CGRect {
+public extension QuadtreeRect where Self == CGRect {
     static func cgRect(
         origin: CGPoint,
         size: CGSize
@@ -57,3 +57,5 @@ public extension QuadTreeRect where Self == CGRect {
         )
     }
 }
+
+extension CGRect: @retroactive @unchecked Sendable { }

@@ -7,7 +7,7 @@
 
 import CoreLocation
 
-extension CLLocationCoordinate2D: QuadTreePoint {
+extension CLLocationCoordinate2D: QuadtreePoint {
     public var coordinateX: Double { longitude }
     public var coordinateY: Double { latitude }
 
@@ -19,7 +19,7 @@ extension CLLocationCoordinate2D: QuadTreePoint {
     }
 }
 
-extension QuadTreePoint where Self == CLLocationCoordinate2D {
+extension QuadtreePoint where Self == CLLocationCoordinate2D {
     static func clLocationCoordinate2D(
         latitude: Double,
         longitude: Double
@@ -30,3 +30,5 @@ extension QuadTreePoint where Self == CLLocationCoordinate2D {
         )
     }
 }
+
+extension CLLocationCoordinate2D: @retroactive @unchecked Sendable { }

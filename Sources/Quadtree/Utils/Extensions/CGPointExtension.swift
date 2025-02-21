@@ -7,7 +7,7 @@
 
 import CoreGraphics
 
-extension CGPoint: QuadTreePoint {
+extension CGPoint: QuadtreePoint {
     public var coordinateX: Double { x }
     public var coordinateY: Double { y }
 
@@ -16,8 +16,10 @@ extension CGPoint: QuadTreePoint {
     }
 }
 
-public extension QuadTreePoint where Self == CGPoint {
+public extension QuadtreePoint where Self == CGPoint {
     static func cgPoint(x: CGFloat, y: CGFloat) -> Self {
         .init(x: x, y: y)
     }
 }
+
+extension CGPoint: @retroactive @unchecked Sendable {}

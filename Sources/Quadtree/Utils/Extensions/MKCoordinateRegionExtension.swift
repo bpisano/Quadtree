@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  QuadTree
+//  Quadtree
 //
 //  Created by Benjamin Pisano on 01/10/2024.
 //
@@ -8,11 +8,11 @@
 import Foundation
 import MapKit
 
-extension MKCoordinateRegion: QuadTreeRect {
+extension MKCoordinateRegion: QuadtreeRect {
     public var rectOrigin: CLLocationCoordinate2D { center }
     public var rectWidth: Double { span.longitudeDelta }
     public var rectHeight: Double { span.latitudeDelta }
-    public var rectAnchor: QuadTreeAnchor { .center }
+    public var rectAnchor: QuadtreeAnchor { .center }
 
     public init(
         x: Double,
@@ -37,3 +37,5 @@ extension MKCoordinateRegion: QuadTreeRect {
         )
     }
 }
+
+extension MKCoordinateRegion: @retroactive @unchecked Sendable { }

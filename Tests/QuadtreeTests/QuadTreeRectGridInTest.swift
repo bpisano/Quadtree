@@ -1,14 +1,14 @@
 //
 //  File.swift
-//  QuadTree
+//  Quadtree
 //
 //  Created by Benjamin Pisano on 07/10/2024.
 //
 
 import XCTest
-import QuadTree
+import Quadtree
 
-final class QuadTreeRectGridInTest: XCTestCase {
+final class QuadtreeRectGridInTest: XCTestCase {
     func testGridTopLeading() {
         let rect: TestRectTopLeading = .init(x: 0, y: 0, width: 10, height: 10)
         let filterRect: TestRectTopLeading = .init(x: 0, y: 0, width: 2, height: 2)

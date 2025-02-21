@@ -7,13 +7,13 @@
 
 import Foundation
 
-public protocol QuadTreeRect {
-    associatedtype Point: QuadTreePoint
+public protocol QuadtreeRect: Sendable {
+    associatedtype Point: QuadtreePoint
 
     var rectOrigin: Point { get }
     var rectWidth: Double { get }
     var rectHeight: Double { get }
-    var rectAnchor: QuadTreeAnchor { get }
+    var rectAnchor: QuadtreeAnchor { get }
 
     init(point: Point, width: Double, height: Double)
     init(x: Double, y: Double, width: Double, height: Double)
@@ -22,11 +22,11 @@ public protocol QuadTreeRect {
     func intersects(with rect: Self) -> Bool
 }
 
-extension QuadTreeRect {
+extension QuadtreeRect {
     var topLeadingX: Double { rectOrigin.coordinateX - rectWidth * rectAnchor.x }
     var topLeadingY: Double { rectOrigin.coordinateY - rectHeight * rectAnchor.y }
 
-    public var rectAnchor: QuadTreeAnchor {
+    public var rectAnchor: QuadtreeAnchor {
         .topLeading
     }
 
@@ -45,8 +45,8 @@ extension QuadTreeRect {
         let minY: Double = topLeadingY
         let maxY: Double = topLeadingY + rectHeight
 
-        return (minX <= point.coordinateX && point.coordinateX <= maxX) &&
-        (minY <= point.coordinateY && point.coordinateY <= maxY)
+        return (minX <= point.coordinateX && point.coordinateX < maxX) &&
+        (minY <= point.coordinateY && point.coordinateY < maxY)
     }
 
     public func intersects(with rect: Self) -> Bool {

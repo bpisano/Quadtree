@@ -7,8 +7,8 @@
 
 import Foundation
 
-public protocol QuadTreeElement: Hashable {
-    associatedtype Point: QuadTreePoint
+public protocol QuadtreeElement: Hashable {
+    associatedtype Point: QuadtreePoint
 
     var position: Point { get }
 }
