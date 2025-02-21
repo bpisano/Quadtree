@@ -5,6 +5,7 @@
 //  Created by Benjamin Pisano on 29/08/2024.
 //
 
+#if canImport(CoreLocation)
 import CoreLocation
 
 extension CLLocationCoordinate2D: QuadtreePoint {
@@ -32,3 +33,4 @@ extension QuadtreePoint where Self == CLLocationCoordinate2D {
 }
 
 extension CLLocationCoordinate2D: @retroactive @unchecked Sendable { }
+#endif

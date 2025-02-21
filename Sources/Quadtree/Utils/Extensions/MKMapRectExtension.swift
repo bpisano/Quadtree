@@ -5,7 +5,7 @@
 //  Created by Benjamin Pisano on 01/10/2024.
 //
 
-import Foundation
+#if canImport(MapKit)
 import MapKit
 
 extension MKMapRect: QuadtreeRect {
@@ -55,3 +55,4 @@ extension MKMapRect: QuadtreeRect {
 }
 
 extension MKMapRect: @retroactive @unchecked Sendable { }
+#endif

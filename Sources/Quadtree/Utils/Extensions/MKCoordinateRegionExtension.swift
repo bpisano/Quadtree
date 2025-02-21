@@ -5,7 +5,7 @@
 //  Created by Benjamin Pisano on 01/10/2024.
 //
 
-import Foundation
+#if canImport(MapKit)
 import MapKit
 
 extension MKCoordinateRegion: QuadtreeRect {
@@ -39,3 +39,4 @@ extension MKCoordinateRegion: QuadtreeRect {
 }
 
 extension MKCoordinateRegion: @retroactive @unchecked Sendable { }
+#endif

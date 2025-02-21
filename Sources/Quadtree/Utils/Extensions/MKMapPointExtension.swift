@@ -5,7 +5,7 @@
 //  Created by Benjamin Pisano on 01/10/2024.
 //
 
-import Foundation
+#if canImport(MapKit)
 import MapKit
 
 extension MKMapPoint: QuadtreePoint {
@@ -21,3 +21,4 @@ extension MKMapPoint: QuadtreePoint {
 }
 
 extension MKMapPoint: @retroactive @unchecked Sendable { }
+#endif

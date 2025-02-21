@@ -5,6 +5,7 @@
 //  Created by Benjamin Pisano on 29/08/2024.
 //
 
+#if canImport(CoreGraphics)
 import CoreGraphics
 
 extension CGRect: QuadtreeRect {
@@ -59,3 +60,4 @@ public extension QuadtreeRect where Self == CGRect {
 }
 
 extension CGRect: @retroactive @unchecked Sendable { }
+#endif

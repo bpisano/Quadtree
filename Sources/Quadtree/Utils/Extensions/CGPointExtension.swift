@@ -5,6 +5,7 @@
 //  Created by Benjamin Pisano on 29/08/2024.
 //
 
+#if canImport(CoreGraphics)
 import CoreGraphics
 
 extension CGPoint: QuadtreePoint {
@@ -23,3 +24,4 @@ public extension QuadtreePoint where Self == CGPoint {
 }
 
 extension CGPoint: @retroactive @unchecked Sendable {}
+#endif
